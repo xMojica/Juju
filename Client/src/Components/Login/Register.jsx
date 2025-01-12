@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Modal from '../Utils/Modal';
 
 function Register() {
     const navigate = useNavigate();
@@ -8,6 +9,12 @@ function Register() {
     const [email, setEmail] = useState('');
     const [telefono, setTelefono] = useState('');
     const [password, setPassword] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +35,7 @@ function Register() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-primary to-secondary">
             <main className="p-10 text-center rounded-lg shadow-lg bg-primary bg-opacity-80">
-                <h1 className='mb-6 text-4xl font-bold text-secondary'>Registrar</h1>
+                <h1 className='mb-6 text-4xl font-bold text-secondary'>Registrarse</h1>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block mb-2 text-secondary float-start">Nombre</label>
@@ -75,6 +82,8 @@ function Register() {
 
                 </form>
             </main>
+            <Modal isOpen={isModalOpen} onClose={closeModal} message={modalMessage} />
+
         </div>
     );
 }

@@ -7,25 +7,41 @@ class libroModel {
     }
 
     async getOne(id) {
-        return await Libro.findById(id);
+        try {
+            return await Libro.findById(id);
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
 
     async create(libro) {
-        return await Libro.create(libro);
+        try {
+            return await Libro.create(libro);
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
 
     async update(id, libro) {
-        return await Libro.findByIdAndUpdate(
-            { _id: new mongoose.Types.ObjectId(id) },
-            libro,
-            { new: true }
-        );
+        try {
+            return await Libro.findByIdAndUpdate(
+                { _id: new mongoose.Types.ObjectId(id) },
+                libro,
+                { new: true, runValidators: true }
+            );
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
 
     async delete(id) {
-        return await Libro.findByIdAndDelete({
-            _id: new mongoose.Types.ObjectId(id)
-        });
+        try {
+            return await Libro.findByIdAndDelete({
+                _id: new mongoose.Types.ObjectId(id)
+            });
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
 }
 

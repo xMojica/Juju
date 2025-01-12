@@ -1,18 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './Components/Home';
-import Login from './Components/Login';
-import Register from './Components/Register';
-import Libros from './Components/Libros';
+import ProtectedRoute from './Components/Utils/ProtectedRoute';
+import Login from './Components/Login/Login';
+import Register from './Components/Login/Register';
+import Editar from './Components/Libros/Editar'
+import Libros from './Components/Libros/Libros';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home />} />
+        <Route exact path="/" element={<Libros />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/libros" element={<Libros />} />
+        <Route path="/editar" element={<ProtectedRoute element={Editar} />} />
+
       </Routes>
     </Router>
   );

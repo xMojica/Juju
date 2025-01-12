@@ -3,7 +3,7 @@ import librosModel from "../models/libroModel.js";
 class librosController {
     constructor() {}
 
-    async getAll(req, res, next) {
+    async getAll(req, res) {
         try {
             const data = await librosModel.getAll();
             res.status(200).json(data);
@@ -11,7 +11,7 @@ class librosController {
             res.status(500).send(err);
         }
     }
-    async getOne(req, res, next) {
+    async getOne(req, res) {
         try {
             const { id } = req.params;
             const data = await librosModel.getOne(id);
@@ -20,7 +20,7 @@ class librosController {
             res.status(500).send(err);
         }
     }
-    async create(req, res, next) {
+    async create(req, res) {
         try {
             const data = await librosModel.create(req.body);
             res.status(201).json(data);
@@ -29,7 +29,7 @@ class librosController {
             res.status(500).send(err);
         }
     }
-    async update(req, res, next) {
+    async update(req, res) {
         try {
             const { id } = req.params;
             const data = await librosModel.update(id, req.body);

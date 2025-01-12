@@ -25,17 +25,25 @@ class usuarioModel {
     }
 
     async update(id, usuario) {
-        return await Usuario.findByIdAndUpdate(
-            { _id: new mongoose.Types.ObjectId(id) },
-            usuario,
-            { new: true }
-        );
+        try {
+            return await Usuario.findByIdAndUpdate(
+                { _id: new mongoose.Types.ObjectId(id) },
+                usuario,
+                { new: true, runValidators: true }
+            );
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
 
     async delete(id) {
-        return await Usuario.findByIdAndDelete({
-            _id: new mongoose.Types.ObjectId(id)
-        });
+        try {
+            return await Usuario.findByIdAndDelete({
+                _id: new mongoose.Types.ObjectId(id)
+            });
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
 }
 

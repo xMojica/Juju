@@ -1,5 +1,6 @@
 import express from "express";
 import "dotenv/config";
+import cors from "cors";
 import routerLibro from "./routes/librosRoutes.js";
 import routerUsuario from "./routes/usuariosRoutes.js";
 import bodyParser from "body-parser";
@@ -8,6 +9,14 @@ import swaggerUI from "swagger-ui-express";
 import specs from "./docs/swagger.js";
 
 const app = express();
+
+app.use(
+    cors({
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"]
+    })
+);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

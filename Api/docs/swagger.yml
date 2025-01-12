@@ -1,0 +1,253 @@
+openapi: 3.0.0
+info:
+    title: API de Libros y Usuarios
+    description: API para gestionar libros y usuarios, con autenticación mediante tokens.
+    version: 1.0.0
+servers:
+    - url: http://localhost:3001
+      description: Servidor local
+
+paths:
+    /api/libros:
+        get:
+            summary: Obtener todos los libros
+            operationId: getAllBooks
+            tags:
+                - Libros
+            responses:
+                "200":
+                    description: Lista de todos los libros obtenida correctamente
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Libro"
+                "500":
+                    description: Error interno en el servidor
+
+        post:
+            summary: Crear un nuevo libro
+            operationId: createBook
+            security:
+                - bearerAuth: []
+            tags:
+                - Libros
+            requestBody:
+                description: Datos del libro a crear
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Libro"
+            responses:
+                "200":
+                    description: Libro creado exitosamente
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Libro"
+                "500":
+                    description: Error interno en el servidor
+
+    /api/libros/{id}:
+        get:
+            summary: Obtener un libro por su ID
+            operationId: getBookById
+            tags:
+                - Libros
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: ID del libro que se desea obtener
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: Libro encontrado
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Libro"
+                "404":
+                    description: Libro no encontrado
+                "500":
+                    description: Error interno en el servidor
+
+        put:
+            summary: Actualizar un libro por su ID
+            operationId: updateBook
+            security:
+                - bearerAuth: []
+            tags:
+                - Libros
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: ID del libro que se desea actualizar
+                  schema:
+                      type: string
+            requestBody:
+                description: Datos del libro a actualizar
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Libro"
+            responses:
+                "200":
+                    description: Libro actualizado correctamente
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Libro"
+                "400":
+                    description: Datos inválidos
+                "404":
+                    description: Libro no encontrado
+                "500":
+                    description: Error interno en el servidor
+
+        delete:
+            summary: Eliminar un libro por su ID
+            operationId: deleteBook
+            security:
+                - bearerAuth: []
+            tags:
+                - Libros
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: ID del libro que se desea eliminar
+                  schema:
+                      type: string
+            responses:
+                "206":
+                    description: Libro eliminado correctamente
+                "404":
+                    description: Libro no encontrado
+                "500":
+                    description: Error interno en el servidor
+
+    /api/register:
+        post:
+            summary: Registrar un nuevo usuario
+            operationId: registerUser
+            tags:
+                - Usuarios
+            requestBody:
+                description: Datos del nuevo usuario para el registro
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Usuario"
+            responses:
+                "201":
+                    description: (ok) Usuario registrado correctamente
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Usuario"
+                "400":
+                    description: El usuario ya existe
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        example: "El usuario ya existe"
+                "500":
+                    description: Error interno en el servidor
+
+    /api/login:
+        post:
+            summary: Iniciar sesión de un usuario
+            operationId: loginUser
+            tags:
+                - Usuarios
+            requestBody:
+                description: Credenciales del usuario para iniciar sesión
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Login"
+            responses:
+                "200":
+                    description: (ok) Usuario autenticado correctamente y token generado
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    mensaje:
+                                        type: string
+                                        example: "Usuario autenticado"
+                                    token:
+                                        type: string
+                                        description: "Token JWT para acceder a rutas protegidas"
+                "400":
+                    description: El usuario no existe o la clave es incorrecta
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        example: "El usuario no existe o la Clave incorrecta"
+                "500":
+                    description: Error interno en el servidor
+
+components:
+    schemas:
+        Libro:
+            type: object
+            required:
+                - titulo
+                - autor
+                - fechaPublicacion
+                - estado
+            properties:
+                titulo:
+                    type: string
+                autor:
+                    type: string
+                descripcion:
+                    type: string
+                fechaPublicacion:
+                    type: string
+                    format: date
+                estado:
+                    type: string
+                    enum:
+                        - disponible
+                        - reservado
+
+        Usuario:
+            type: object
+            required:
+                - nombre
+                - email
+                - clave
+            properties:
+                nombre:
+                    type: string
+                email:
+                    type: string
+                    format: email
+                clave:
+                    type: string
+                    format: password
+
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT

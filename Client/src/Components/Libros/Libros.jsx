@@ -23,9 +23,9 @@ function Libros() {
     useEffect(() => {
         const fetchLibros = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/libros');
+                const response = await axios.get('https://https://juju-2ygz.onrender.com/api/libros');
                 setLibros(response.data);
-                setLibrosFiltrados(response.data); // Inicializar librosFiltrados con todos los libros
+                setLibrosFiltrados(response.data);
             } catch (error) {
                 console.error('Error al obtener los libros:', error);
             }
@@ -67,7 +67,7 @@ function Libros() {
 
         try {
             console.log(libro)
-            const response = await axios.delete(`http://localhost:3001/api/libros/${libro._id}`, {
+            const response = await axios.delete(`https://https://juju-2ygz.onrender.com/api/libros/${libro._id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

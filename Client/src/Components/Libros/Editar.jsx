@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import Modal from '../Utils/Modal'; // Asegúrate de tener un componente Modal
+import Modal from '../Utils/Modal';
 
 function Editar() {
     const location = useLocation();
@@ -30,7 +30,7 @@ function Editar() {
         }
 
         try {
-            const response = await axios.put(`http://localhost:3001/api/libros/${libro._id}`, {
+            const response = await axios.put(`https://https://juju-2ygz.onrender.com/api/libros/${libro._id}`, {
                 titulo,
                 autor,
                 ano_publicacion: new Date(anoPublicacion, 0, 1),

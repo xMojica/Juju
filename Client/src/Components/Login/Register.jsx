@@ -60,7 +60,7 @@ function Register() {
                     <div>
                         <label className="block mb-2 text-secondary float-start">Teléfono</label>
                         <input
-                            type="tel"
+                            type="number"
                             value={telefono}
                             onChange={(e) => setTelefono(e.target.value)}
                             className="w-full p-2 border rounded border-secondary"

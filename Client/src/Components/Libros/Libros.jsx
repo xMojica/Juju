@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import Modal from '../Utils/Modal';
 import editar from '../../assets/editar.svg';
 import eliminar from '../../assets/eliminar.svg';
 import agregar from '../../assets/agregar.svg';
@@ -11,7 +12,13 @@ function Libros() {
     const [librosFiltrados, setLibrosFiltrados] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
     const [login, setLogin] = useState('Iniciar sesión');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
     const navigate = useNavigate();
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     useEffect(() => {
         const fetchLibros = async () => {
@@ -59,12 +66,14 @@ function Libros() {
         }
 
         try {
+            console.log(libro)
             const response = await axios.delete(`https://juju-2ygz.onrender.com/api/libros/${libro._id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log(response.data);
+            setModalMessage('Libro eliminado con exito');
+            setIsModalOpen(true);
             setLibros(libros.filter(l => l._id !== libro._id));
             setLibrosFiltrados(libros.filter(l => l._id !== libro._id));
         } catch (error) {
@@ -129,6 +138,7 @@ function Libros() {
                     </div>
                 </div>
             </main>
+            <Modal isOpen={isModalOpen} onClose={closeModal} message={modalMessage} />
         </>
     );
 }

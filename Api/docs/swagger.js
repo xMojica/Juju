@@ -20,7 +20,7 @@ const options = {
             }
         ]
     },
-    apis: ["./docs/swagger.yml"] // Ajusta esta ruta según la ubicación de tu archivo YAML
+    apis: ["./docs/swagger.yml"]
 };
 
 const specs = swaggerJsdoc(options);

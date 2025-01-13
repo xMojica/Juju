@@ -18,7 +18,7 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://https://juju-2ygz.onrender.com/api/login', {
+            const response = await axios.post('https://juju-2ygz.onrender.com/api/login', {
                 email,
                 clave: password
             });

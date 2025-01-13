@@ -27,7 +27,7 @@ function Agregar() {
         }
 
         try {
-            const response = await axios.post(`https://https://juju-2ygz.onrender.com/api/libros`, {
+            const response = await axios.post(`https://juju-2ygz.onrender.com/api/libros`, {
                 titulo,
                 autor,
                 ano_publicacion: new Date(anoPublicacion, 0, 1),

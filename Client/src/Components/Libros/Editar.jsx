@@ -30,7 +30,7 @@ function Editar() {
         }
 
         try {
-            const response = await axios.put(`https://https://juju-2ygz.onrender.com/api/libros/${libro._id}`, {
+            const response = await axios.put(`https://juju-2ygz.onrender.com/api/libros/${libro._id}`, {
                 titulo,
                 autor,
                 ano_publicacion: new Date(anoPublicacion, 0, 1),

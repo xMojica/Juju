@@ -15,7 +15,7 @@ function Libros() {
     useEffect(() => {
         const fetchLibros = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/libros');
+                const response = await axios.get('https://juju-2ygz.onrender.com/api/libros');
                 setLibros(response.data);
             } catch (error) {
                 console.error('Error al obtener los libros:', error);
@@ -53,7 +53,7 @@ function Libros() {
 
     const eliminarLibro = (libro) => {
         const token = Cookies.get('token');
-        axios.delete(`http://localhost:3001/api/libros/${libro._id}`, {
+        axios.delete(`https://juju-2ygz.onrender.com/api/libros/${libro._id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

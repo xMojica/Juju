@@ -1,6 +1,8 @@
 import express from "express";
 import "dotenv/config";
 import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
 import routerLibro from "./routes/librosRoutes.js";
 import routerUsuario from "./routes/usuariosRoutes.js";
 import bodyParser from "body-parser";
@@ -9,6 +11,10 @@ import swaggerUI from "swagger-ui-express";
 import specs from "./docs/swagger.js";
 
 const app = express();
+
+app.use(helmet());
+
+app.use(morgan("combined"));
 
 app.use(
     cors({
@@ -25,14 +31,10 @@ app.use("/api/libros", routerLibro);
 app.use("/api", routerUsuario);
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(specs));
 
-try {
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-        console.log("Servidor corriendo en: http://localhost:" + PORT);
-    });
-} catch (err) {
-    console.log(err);
-}
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en: http://localhost:${PORT}`);
+});
 
 process.on("SIGINT", async () => {
     await dbClient.cerrarConexion();

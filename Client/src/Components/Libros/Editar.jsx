@@ -22,7 +22,7 @@ function Editar() {
         }
 
         try {
-            const response = await axios.put(`http://localhost:3001/api/libros/${libro._id}`, {
+            const response = await axios.put(`https://juju-2ygz.onrender.com/api/libros/${libro._id}`, {
                 titulo,
                 autor,
                 ano_publicacion: new Date(anoPublicacion, 0, 1), // Convertir el año a una fecha completa

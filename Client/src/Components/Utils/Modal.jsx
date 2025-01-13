@@ -6,7 +6,6 @@ function Modal({ isOpen, onClose, message }) {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="p-6 text-center bg-white rounded-lg shadow-lg">
-                <h2 className="mb-4 text-2xl font-bold">Error</h2>
                 <p className="mb-4">{message}</p>
                 <button
                     onClick={onClose}

@@ -4,10 +4,6 @@ import mongoose from "mongoose";
 class librosController {
     constructor() {}
 
-    validateMongoId(id) {
-        return mongoose.Types.ObjectId.isValid(id);
-    }
-
     async getAll(req, res) {
         try {
             const data = await librosModel.getAll();
@@ -19,7 +15,7 @@ class librosController {
 
     async getOne(req, res) {
         const { id } = req.params;
-        if (!this.validateMongoId(id)) {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ error: "ID no válido" });
         }
 
@@ -43,23 +39,13 @@ class librosController {
                 .json({ error: "Todos los campos son obligatorios" });
         }
 
-        if (
-            typeof titulo !== "string" ||
-            typeof autor !== "string" ||
-            typeof estado !== "string"
-        ) {
-            return res
-                .status(400)
-                .json({
-                    error: "Título, autor y estado deben ser cadenas de texto"
-                });
+        if (typeof titulo !== "string" || typeof autor !== "string") {
+            return res.status(400).json({
+                error: "Título y autor deben ser cadenas de texto"
+            });
         }
 
-        if (
-            !Number.isInteger(ano_publicacion) ||
-            ano_publicacion < 1000 ||
-            ano_publicacion > new Date().getFullYear()
-        ) {
+        if (ano_publicacion > new Date().getFullYear()) {
             return res
                 .status(400)
                 .json({ error: "Año de publicación no válido" });
@@ -82,7 +68,7 @@ class librosController {
         const { id } = req.params;
         const { titulo, autor, ano_publicacion, estado } = req.body;
 
-        if (!this.validateMongoId(id)) {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ error: "ID no válido" });
         }
 
@@ -92,23 +78,13 @@ class librosController {
                 .json({ error: "Todos los campos son obligatorios" });
         }
 
-        if (
-            typeof titulo !== "string" ||
-            typeof autor !== "string" ||
-            typeof estado !== "string"
-        ) {
-            return res
-                .status(400)
-                .json({
-                    error: "Título, autor y estado deben ser cadenas de texto"
-                });
+        if (typeof titulo !== "string" || typeof autor !== "string") {
+            return res.status(400).json({
+                error: "Título y deben ser cadenas de texto"
+            });
         }
 
-        if (
-            !Number.isInteger(ano_publicacion) ||
-            ano_publicacion < 1000 ||
-            ano_publicacion > new Date().getFullYear()
-        ) {
+        if (ano_publicacion > new Date().getFullYear()) {
             return res
                 .status(400)
                 .json({ error: "Año de publicación no válido" });
@@ -132,7 +108,7 @@ class librosController {
 
     async delete(req, res) {
         const { id } = req.params;
-        if (!this.validateMongoId(id)) {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ error: "ID no válido" });
         }
         try {

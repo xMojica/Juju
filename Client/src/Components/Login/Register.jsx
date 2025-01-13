@@ -19,7 +19,7 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://juju-2ygz.onrender.com/api/register', {
+            const response = await axios.post('http://localhost:3001/api/register', {
                 nombre,
                 email,
                 telefono,

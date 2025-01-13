@@ -1,6 +1,5 @@
 import usuariosModel from "../models/usuariosModel.js";
-import bcrypt from "bcrypt";
-import jsonwebtoken from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import { generarToken } from "../helpers/autenticacion.js";
 
 class usuariosController {

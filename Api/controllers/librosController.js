@@ -1,4 +1,5 @@
 import librosModel from "../models/libroModel.js";
+import mongoose from "mongoose";
 
 class librosController {
     constructor() {}

@@ -8,12 +8,7 @@ class dbCliente {
 
     async conectarBaseDatos() {
         try {
-            await mongoose.connect(process.env.MONGODB_URI, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                useCreateIndex: true,
-                useFindAndModify: false
-            });
+            await mongoose.connect(process.env.MONGODB_URI);
             console.log("Base de datos conectada con éxito.");
         } catch (error) {
             console.error("Error al conectar la base de datos:", error.message);

@@ -6,6 +6,46 @@ info:
 servers:
     - url: http://localhost:3001
       description: Servidor local
+    - url: https://juju-2ygz.onrender.com
+      description: Servidor produccion
+
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+    schemas:
+        Libro:
+            type: object
+            properties:
+                titulo:
+                    type: string
+                    example: El Quijote
+                autor:
+                    type: string
+                    example: Miguel de Cervantes
+                ano_publicacion:
+                    type: date
+                    example: "1605"
+                estado:
+                    type: string
+                    example: disponible
+        Usuario:
+            type: object
+            properties:
+                email:
+                    type: string
+                    example: santiago@yahoo.es
+                nombre:
+                    type: string
+                    example: Santiago Mojica
+                telefono:
+                    type: string
+                    example: "3245648432"
+                clave:
+                    type: string
+                    example: M1c0ntr4s3n4
 
 paths:
     /api/libros:
@@ -24,35 +64,34 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Libro"
                 "500":
-                    description: Error interno en el servidor
-
+                    description: Error interno del servidor
         post:
             summary: Crear un nuevo libro
             operationId: createBook
-            security:
-                - bearerAuth: []
             tags:
                 - Libros
+            security:
+                - bearerAuth: []
             requestBody:
-                description: Datos del libro a crear
                 required: true
                 content:
                     application/json:
                         schema:
                             $ref: "#/components/schemas/Libro"
             responses:
-                "200":
-                    description: Libro creado exitosamente
+                "201":
+                    description: Libro creado correctamente
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Libro"
+                "400":
+                    description: Datos inválidos
                 "500":
-                    description: Error interno en el servidor
-
+                    description: Error interno del servidor
     /api/libros/{id}:
         get:
-            summary: Obtener un libro por su ID
+            summary: Obtener un libro por ID
             operationId: getBookById
             tags:
                 - Libros
@@ -60,37 +99,37 @@ paths:
                 - name: id
                   in: path
                   required: true
-                  description: ID del libro que se desea obtener
                   schema:
                       type: string
+                      example: 60c72b2f9b1e8b001c8e4b8a
             responses:
                 "200":
-                    description: Libro encontrado
+                    description: Libro obtenido correctamente
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Libro"
+                "400":
+                    description: ID no válido
                 "404":
                     description: Libro no encontrado
                 "500":
-                    description: Error interno en el servidor
-
+                    description: Error interno del servidor
         put:
-            summary: Actualizar un libro por su ID
-            operationId: updateBook
-            security:
-                - bearerAuth: []
+            summary: Actualizar un libro por ID
+            operationId: updateBookById
             tags:
                 - Libros
+            security:
+                - bearerAuth: []
             parameters:
                 - name: id
                   in: path
                   required: true
-                  description: ID del libro que se desea actualizar
                   schema:
                       type: string
+                      example: 60c72b2f9b1e8b001c8e4b8a
             requestBody:
-                description: Datos del libro a actualizar
                 required: true
                 content:
                     application/json:
@@ -108,29 +147,30 @@ paths:
                 "404":
                     description: Libro no encontrado
                 "500":
-                    description: Error interno en el servidor
-
+                    description: Error interno del servidor
         delete:
-            summary: Eliminar un libro por su ID
-            operationId: deleteBook
-            security:
-                - bearerAuth: []
+            summary: Eliminar un libro por ID
+            operationId: deleteBookById
             tags:
                 - Libros
+            security:
+                - bearerAuth: []
             parameters:
                 - name: id
                   in: path
                   required: true
-                  description: ID del libro que se desea eliminar
                   schema:
                       type: string
+                      example: 60c72b2f9b1e8b001c8e4b8a
             responses:
-                "206":
+                "204":
                     description: Libro eliminado correctamente
+                "400":
+                    description: ID no válido
                 "404":
                     description: Libro no encontrado
                 "500":
-                    description: Error interno en el servidor
+                    description: Error interno del servidor
 
     /api/register:
         post:
@@ -139,7 +179,6 @@ paths:
             tags:
                 - Usuarios
             requestBody:
-                description: Datos del nuevo usuario para el registro
                 required: true
                 content:
                     application/json:
@@ -147,107 +186,51 @@ paths:
                             $ref: "#/components/schemas/Usuario"
             responses:
                 "201":
-                    description: (ok) Usuario registrado correctamente
+                    description: Usuario registrado correctamente
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Usuario"
                 "400":
-                    description: El usuario ya existe
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                        example: "El usuario ya existe"
+                    description: Datos inválidos o el usuario ya existe
                 "500":
-                    description: Error interno en el servidor
+                    description: Error interno del servidor
 
     /api/login:
         post:
-            summary: Iniciar sesión de un usuario
+            summary: Iniciar sesión
             operationId: loginUser
             tags:
                 - Usuarios
             requestBody:
-                description: Credenciales del usuario para iniciar sesión
                 required: true
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/Login"
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    example: usuario@example.com
+                                clave:
+                                    type: string
+                                    example: contraseña123
             responses:
                 "200":
-                    description: (ok) Usuario autenticado correctamente y token generado
+                    description: Inicio de sesión exitoso
                     content:
                         application/json:
                             schema:
                                 type: object
                                 properties:
-                                    mensaje:
-                                        type: string
-                                        example: "Usuario autenticado"
                                     token:
                                         type: string
-                                        description: "Token JWT para acceder a rutas protegidas"
+                                        example: token_de_ejemplo
                 "400":
-                    description: El usuario no existe o la clave es incorrecta
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                        example: "El usuario no existe o la Clave incorrecta"
+                    description: Datos inválidos
+                "401":
+                    description: Clave incorrecta
+                "404":
+                    description: Usuario no encontrado
                 "500":
-                    description: Error interno en el servidor
-
-components:
-    schemas:
-        Libro:
-            type: object
-            required:
-                - titulo
-                - autor
-                - fechaPublicacion
-                - estado
-            properties:
-                titulo:
-                    type: string
-                autor:
-                    type: string
-                descripcion:
-                    type: string
-                fechaPublicacion:
-                    type: string
-                    format: date
-                estado:
-                    type: string
-                    enum:
-                        - disponible
-                        - reservado
-
-        Usuario:
-            type: object
-            required:
-                - nombre
-                - email
-                - clave
-            properties:
-                nombre:
-                    type: string
-                email:
-                    type: string
-                    format: email
-                clave:
-                    type: string
-                    format: password
-
-    securitySchemes:
-        bearerAuth:
-            type: http
-            scheme: bearer
-            bearerFormat: JWT
+                    description: Error interno del servidor

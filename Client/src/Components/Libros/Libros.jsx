@@ -23,7 +23,7 @@ function Libros() {
     useEffect(() => {
         const fetchLibros = async () => {
             try {
-                const response = await axios.get('https://juju-2ygz.onrender.com:3001/api/libros');
+                const response = await axios.get('https://juju-2ygz.onrender.com/api/libros');
                 setLibros(response.data);
                 setLibrosFiltrados(response.data);
             } catch (error) {

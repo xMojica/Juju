@@ -1,5 +1,5 @@
-import "dotenv";
 import mongoose from "mongoose";
+import "dotenv/config";
 
 class dbCliente {
     constructor() {
@@ -7,16 +7,29 @@ class dbCliente {
     }
 
     async conectarBaseDatos() {
-        await mongoose.connect(process.env.MONGODB_URI);
-        console.log("Base de datos conectada con exito.");
+        try {
+            await mongoose.connect(process.env.MONGODB_URI, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+                useCreateIndex: true,
+                useFindAndModify: false
+            });
+            console.log("Base de datos conectada con éxito.");
+        } catch (error) {
+            console.error("Error al conectar la base de datos:", error.message);
+            process.exit(1);
+        }
     }
 
     async cerrarConexion() {
         try {
             await mongoose.disconnect();
-            console.log("Conexion de la base de datos cerrada con exito.");
+            console.log("Conexión de la base de datos cerrada con éxito.");
         } catch (error) {
-            console.log("Error al cerrar la conexion de la base de datos.");
+            console.error(
+                "Error al cerrar la conexión de la base de datos:",
+                error.message
+            );
         }
     }
 }

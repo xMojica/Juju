@@ -3,15 +3,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-function Editar() {
+function Agregar() {
     const location = useLocation();
     const navigate = useNavigate();
     const { libro } = location.state || {};
 
-    const [titulo, setTitulo] = useState(libro.titulo);
-    const [autor, setAutor] = useState(libro.autor);
-    const [anoPublicacion, setAnoPublicacion] = useState(new Date(libro.ano_publicacion).getFullYear());
-    const [estado, setEstado] = useState(libro.estado);
+    const [titulo, setTitulo] = useState();
+    const [autor, setAutor] = useState();
+    const [anoPublicacion, setAnoPublicacion] = useState();
+    const [estado, setEstado] = useState();
 
     const guardar = async (e) => {
         e.preventDefault();
@@ -22,7 +22,7 @@ function Editar() {
         }
 
         try {
-            const response = await axios.put(`http://localhost:3001/api/libros/${libro._id}`, {
+            const response = await axios.post(`http://localhost:3001/api/libros/`, {
                 titulo,
                 autor,
                 ano_publicacion: new Date(anoPublicacion, 0, 1), // Convertir el año a una fecha completa
@@ -32,22 +32,22 @@ function Editar() {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log('Libro actualizado:', response.data);
+            console.log('Libro agregado:', response.data);
             navigate('/');
         } catch (error) {
-            console.error('Error al actualizar el libro:', error);
+            console.error('Error al agregar el libro:', error);
         }
     };
 
     return (
         <div className="container p-4 mx-auto">
-            <h1 className="mb-4 text-2xl font-bold text-primary">Editar Libro</h1>
+            <h1 className="mb-4 text-2xl font-bold text-primary">Agregar Libro</h1>
             <form onSubmit={guardar}>
                 <div className="mb-4">
                     <label className="block mb-2 text-sm font-bold text-slate-500">Título</label>
                     <input
                         type="text"
-                        defaultValue={libro.titulo}
+                        required
                         onChange={((e) => { setTitulo(e.target.value) })}
                         className="w-full px-3 py-2 leading-tight border rounded shadow appearance-none text-secondary focus:outline-none focus:shadow-outline"
                     />
@@ -56,7 +56,7 @@ function Editar() {
                     <label className="block mb-2 text-sm font-bold text-slate-500">Autor</label>
                     <input
                         type="text"
-                        defaultValue={libro.autor}
+                        required
                         onChange={((e) => { setAutor(e.target.value) })}
                         className="w-full px-3 py-2 leading-tight border rounded shadow appearance-none text-secondary focus:outline-none focus:shadow-outline"
                     />
@@ -65,7 +65,7 @@ function Editar() {
                     <label className="block mb-2 text-sm font-bold text-slate-500">Año de Publicación</label>
                     <input
                         type="text"
-                        defaultValue={new Date(libro.ano_publicacion).getFullYear()}
+                        required
                         onChange={((e) => { setAnoPublicacion(e.target.value) })}
                         className="w-full px-3 py-2 leading-tight border rounded shadow appearance-none text-secondary focus:outline-none focus:shadow-outline"
                     />
@@ -74,7 +74,7 @@ function Editar() {
                     <label className="block mb-2 text-sm font-bold text-slate-500">Estado</label>
                     <input
                         type="text"
-                        defaultValue={libro.estado}
+                        required
                         onChange={((e) => { setEstado(e.target.value) })}
                         className="w-full px-3 py-2 leading-tight border rounded shadow appearance-none text-secondary focus:outline-none focus:shadow-outline"
                     />
@@ -90,4 +90,4 @@ function Editar() {
     );
 }
 
-export default Editar;
+export default Agregar;

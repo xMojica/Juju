@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import editar from '../../assets/editar.svg';
 import eliminar from '../../assets/eliminar.svg';
+import agregar from '../../assets/agregar.svg'
 import { useNavigate } from 'react-router-dom';
 
 function Libros() {
@@ -66,6 +67,13 @@ function Libros() {
 
     }
 
+    const agregarLibro = () => {
+        const token = Cookies.get('token');
+        if (token) {
+            navigate("/agregar")
+        }
+    }
+
     return (
         <>
             <header>
@@ -102,6 +110,11 @@ function Libros() {
                                 )}
                             </div>
                         ))}
+                        {isAdmin && (<div className="flex items-center justify-center p-4 text-xl text-center rounded-lg shadow-lg bg-primary text-secondary hover:bg-primary/50 hover:cursor-pointer" onClick={agregarLibro}>
+                            <img src={agregar} alt="agregar" className='mr-2' />
+                            Agregar
+                        </div>)}
+
                     </div>
                 </div>
             </main>

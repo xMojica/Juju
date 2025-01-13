@@ -4,6 +4,7 @@ import ProtectedRoute from './Components/Utils/ProtectedRoute';
 import Login from './Components/Login/Login';
 import Register from './Components/Login/Register';
 import Editar from './Components/Libros/Editar'
+import Agregar from './Components/Libros/Agregar'
 import Libros from './Components/Libros/Libros';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/editar" element={<ProtectedRoute element={Editar} />} />
+        <Route path="/agregar" element={<ProtectedRoute element={Agregar} />} />
 
       </Routes>
     </Router>

@@ -12,6 +12,7 @@ function Editar() {
     const [autor, setAutor] = useState(libro.autor);
     const [anoPublicacion, setAnoPublicacion] = useState(new Date(libro.ano_publicacion).getFullYear());
     const [estado, setEstado] = useState(libro.estado);
+    const [error, setError] = useState('');
 
     const guardar = async (e) => {
         e.preventDefault();
@@ -36,51 +37,55 @@ function Editar() {
             navigate('/');
         } catch (error) {
             console.error('Error al actualizar el libro:', error);
+            setError('Error al actualizar el libro: ' + error.response.data.error);
         }
     };
 
     return (
-        <div className="container p-4 mx-auto">
-            <h1 className="mb-4 text-2xl font-bold text-primary">Editar Libro</h1>
+        <div className="container flex flex-col items-center p-4 mx-auto">
+            <h1 className="mb-12 text-3xl font-bold text-primary">Editar Libro</h1>
+            {error && <p className="mb-4 text-red-500">{error}</p>}
             <form onSubmit={guardar}>
                 <div className="mb-4">
                     <label className="block mb-2 text-sm font-bold text-slate-500">Título</label>
                     <input
                         type="text"
-                        defaultValue={libro.titulo}
-                        onChange={((e) => { setTitulo(e.target.value) })}
-                        className="w-full px-3 py-2 leading-tight border rounded shadow appearance-none text-secondary focus:outline-none focus:shadow-outline"
+                        value={titulo}
+                        onChange={(e) => setTitulo(e.target.value)}
+                        className="px-3 py-2 leading-tight border rounded shadow appearance-none text-secondary focus:outline-none focus:shadow-outline"
                     />
                 </div>
                 <div className="mb-4">
                     <label className="block mb-2 text-sm font-bold text-slate-500">Autor</label>
                     <input
                         type="text"
-                        defaultValue={libro.autor}
-                        onChange={((e) => { setAutor(e.target.value) })}
-                        className="w-full px-3 py-2 leading-tight border rounded shadow appearance-none text-secondary focus:outline-none focus:shadow-outline"
+                        value={autor}
+                        onChange={(e) => setAutor(e.target.value)}
+                        className="px-3 py-2 leading-tight border rounded shadow appearance-none text-secondary focus:outline-none focus:shadow-outline"
                     />
                 </div>
                 <div className="mb-4">
                     <label className="block mb-2 text-sm font-bold text-slate-500">Año de Publicación</label>
                     <input
-                        type="text"
-                        defaultValue={new Date(libro.ano_publicacion).getFullYear()}
-                        onChange={((e) => { setAnoPublicacion(e.target.value) })}
-                        className="w-full px-3 py-2 leading-tight border rounded shadow appearance-none text-secondary focus:outline-none focus:shadow-outline"
+                        type="number"
+                        value={anoPublicacion}
+                        onChange={(e) => setAnoPublicacion(e.target.value)}
+                        className="px-3 py-2 leading-tight border rounded shadow appearance-none text-secondary focus:outline-none focus:shadow-outline"
                     />
                 </div>
                 <div className="mb-4">
                     <label className="block mb-2 text-sm font-bold text-slate-500">Estado</label>
-                    <input
-                        type="text"
-                        defaultValue={libro.estado}
-                        onChange={((e) => { setEstado(e.target.value) })}
-                        className="w-full px-3 py-2 leading-tight border rounded shadow appearance-none text-secondary focus:outline-none focus:shadow-outline"
-                    />
+                    <select
+                        value={estado}
+                        onChange={(e) => setEstado(e.target.value)}
+                        className="px-3 py-2 leading-tight border rounded shadow appearance-none text-secondary focus:outline-none focus:shadow-outline"
+                    >
+                        <option value="disponible">Disponible</option>
+                        <option value="reservado">Reservado</option>
+                    </select>
                 </div>
                 <button
-                    type='submit'
+                    type="submit"
                     className="px-4 py-2 font-bold rounded text-secondary bg-primary hover:bg-slate-500 focus:outline-none focus:shadow-outline"
                 >
                     Guardar Cambios

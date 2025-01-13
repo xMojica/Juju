@@ -3,6 +3,10 @@ import librosModel from "../models/libroModel.js";
 class librosController {
     constructor() {}
 
+    validateMongoId(id) {
+        return mongoose.Types.ObjectId.isValid(id);
+    }
+
     async getAll(req, res) {
         try {
             const data = await librosModel.getAll();
